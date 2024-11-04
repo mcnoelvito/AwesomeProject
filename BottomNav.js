@@ -6,6 +6,8 @@ import Portofolio from './App';
 import Mahasiswa from './Mahasiswa';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUser, faUserGraduate } from '@fortawesome/free-solid-svg-icons'
+import {WebView} from 'react-native-webview';
+import { faGithub } from '@fortawesome/free-brands-svg-icons/faGithub';
 
 
 function HomeScreen() {
@@ -17,6 +19,14 @@ function HomeScreen() {
 function Datamahasiswa() {
   return (
     <Mahasiswa/>
+  );
+}
+
+function WebScreen() {
+  return (
+    <WebView
+      source={{ uri: 'https://github.com/mcnoelvito' }}
+    />
   );
 }
 
@@ -37,6 +47,13 @@ export default function App() {
           headerShown: false,
           tabBarIcon: ({color}) => 
          ( <FontAwesomeIcon icon={faUserGraduate} color={color} size={24}/> ),
+        }}
+        />
+        <Tab.Screen name="GitHub Saya" component={WebScreen} 
+        options={{ 
+          headerShown: false,
+          tabBarIcon: ({color}) => 
+         ( <FontAwesomeIcon icon={faGithub} color={color} size={24}/> ),
         }}
         />
       </Tab.Navigator>
