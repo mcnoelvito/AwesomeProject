@@ -2,7 +2,8 @@ import React from 'react'
 import Datamahasiswa from './data/mahasiswa.json'
 import { FlatList, Text, View, TouchableOpacity, Linking, StyleSheet } from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faUser, faUserGraduate } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faUserGraduate, faMars, faVenus } from '@fortawesome/free-solid-svg-icons';
+
 
 
 const Mahasiswa = () => {
@@ -15,13 +16,18 @@ const Mahasiswa = () => {
            Linking.openURL('google.navigation:q=' + item.latitude + ',' + item.longitude)} >
          <View style={styles.card}>
            <View>
-             <FontAwesomeIcon icon={faUserGraduate} size={50} color={'red'} />
+             <FontAwesomeIcon icon={faUserGraduate} size={50} 
+             color={item.gender == 'male' ? 'lightblue' : 'pink'} />
            </View>
            <View>
-             <Text>{item.first_name} {item.last_name}</Text>
-             <Text>{item.gender}</Text>
+             <Text style={styles.cardtitle}>{item.first_name} {item.last_name}</Text>
+             <FontAwesomeIcon
+             icon={item.gender == 'male' ? faMars : faVenus}
+             color={item.gender == 'male' ? 'lightblue' : 'pink'}
+             size={14}
+             />
              <Text>{item.class}</Text>
-             <Text>{item.email}</Text>
+             
              <Text>{item.latitude}, {item.longitude}</Text>
            </View>
          </View>
@@ -37,7 +43,7 @@ export default Mahasiswa
 const styles = StyleSheet.create({
     title: {
       paddingVertical: 12,
-      backgroundColor: '#333',
+      backgroundColor: '#C6E7FF',
       color: 'white',
       fontSize: 20,
       fontWeight: 'bold',
@@ -48,7 +54,7 @@ const styles = StyleSheet.create({
       width: 80,
     },
     cardtitle: {
-      fontSize: 20,
+      fontSize: 18,
       fontWeight: 'bold',
     },
     card: {
@@ -56,7 +62,7 @@ const styles = StyleSheet.create({
       padding: 20,
       borderRadius: 10,
       backgroundColor: 'white',
-      shadowColor: '#000',
+      shadowColor: '',
       shadowOffset: {
         width: 1,
         height: 1,
