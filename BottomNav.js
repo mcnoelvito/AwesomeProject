@@ -3,8 +3,10 @@ import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Portofolio from './App';
+import Mahasiswa from './Mahasiswa';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUser, faUserGraduate } from '@fortawesome/free-solid-svg-icons'
+
 
 function HomeScreen() {
   return (
@@ -12,11 +14,9 @@ function HomeScreen() {
   );
 }
 
-function SettingsScreen() {
+function Datamahasiswa() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
-    </View>
+    <Mahasiswa/>
   );
 }
 
@@ -32,7 +32,7 @@ export default function App() {
           tabBarIcon: ({color}) => 
          ( <FontAwesomeIcon icon={faUser} color={color} size={24}/> ),
         }}/>
-        <Tab.Screen name="Data Mahasiswa" component={SettingsScreen} 
+        <Tab.Screen name="Data Mahasiswa" component={Datamahasiswa} 
         options={{ 
           headerShown: false,
           tabBarIcon: ({color}) => 
