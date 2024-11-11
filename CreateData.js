@@ -9,6 +9,34 @@ const Createdata = () => {
     const [kelas, setKelas] = useState('');
     const [gender, setGender] = useState('');
     const [email, setEmail] = useState('');
+
+    const submit = () => {
+        const data = {
+          first_name: first_name,
+          last_name: last_name,
+          email: email,
+          kelas: kelas,
+          gender: gender,
+        };
+        fetch('http://10.0.2.2:3000/mahasiswa', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+        .then((response) => response.json())
+        .then((json) => {
+          console.log(json);
+          alert('Data tersimpan');
+          setFirstName('');
+          setLastName('');
+          setEmail('');
+          setKelas('');
+          setGender('');
+        })
+      }
     return (
         <SafeAreaView>
          <View>
@@ -53,4 +81,6 @@ const styles = StyleSheet.create({
         marginVertical: 10,
       }
      })
+     
+     
      
