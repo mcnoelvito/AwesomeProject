@@ -8,6 +8,7 @@ import { faUser, faUserGraduate } from '@fortawesome/free-solid-svg-icons'
 import {WebView} from 'react-native-webview';
 import { faGithub } from '@fortawesome/free-brands-svg-icons/faGithub';
 import Createdata from './CreateData';
+import Daftarmahasiswa from './List_data';
 
 function HomeScreen() {
   return (
@@ -35,13 +36,13 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator>
-        <Tab.Screen name="Profil" component={HomeScreen} 
+        <Tab.Screen name="Tambah Profil" component={HomeScreen} 
         options={{ 
           headerShown: false,
           tabBarIcon: ({color}) => 
          ( <FontAwesomeIcon icon={faUser} color={color} size={24}/> ),
         }}/>
-        <Tab.Screen name="Data Mahasiswa" component={Datamahasiswa} 
+        <Tab.Screen name="Data Mahasiswa" component={Daftarmahasiswa} 
         options={{ 
           headerShown: false,
           tabBarIcon: ({color}) => 
