@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { SafeAreaView, View, ScrollView, TextInput, Button, StyleSheet } from 'react-native';
+import { SafeAreaView, View, ScrollView, TextInput, Button, StyleSheet, Text } from 'react-native';
 
 
 const Createdata = () => {
@@ -28,3 +28,29 @@ const Createdata = () => {
 }
 
 export default Createdata
+const styles = StyleSheet.create({
+    title: {
+      paddingVertical: 12,
+      backgroundColor: '#333',
+      color: 'white',
+      fontSize: 20,
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+    form: {
+      padding: 10,
+      marginBottom: 100,
+    },
+    input: {
+        borderWidth: 1,
+        borderColor: '#777',
+        borderRadius: 8,
+        padding: 8,
+        width: '100%',
+        marginVertical: 5,
+      },
+      button: {
+        marginVertical: 10,
+      }
+     })
+     

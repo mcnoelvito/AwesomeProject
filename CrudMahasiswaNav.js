@@ -3,16 +3,15 @@ import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Portofolio from './App';
-import Mahasiswa from './Mahasiswa';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUser, faUserGraduate } from '@fortawesome/free-solid-svg-icons'
 import {WebView} from 'react-native-webview';
 import { faGithub } from '@fortawesome/free-brands-svg-icons/faGithub';
-
+import Createdata from './CreateData';
 
 function HomeScreen() {
   return (
-      <Portofolio/>
+      <Createdata/>
   );
 }
 
