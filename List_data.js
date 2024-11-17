@@ -10,6 +10,7 @@ const Listdata = () => {
     const [isLoading, setLoading] = useState(true);
     const [dataUser, setDataUser] = useState({});
     const [refresh, setRefresh] = useState(false);
+    
 
     useEffect(() => {
         fetch(jsonUrl)
@@ -31,6 +32,19 @@ const Listdata = () => {
           })
           .catch((error) => console.error(error))
           .finally(() => setLoading(false));
+        
+      }
+      function deleteData(id) {
+        fetch(`http://10.0.2.2:3000/mahasiswa/${id}`, {
+          method: 'DELETE',
+        })
+          .then((response) => response.json())
+          .then((json) => {
+            console.log(json)
+            alert('Data berhasil dihapus');
+            refreshPage();
+          })
+        
       }
      
      
@@ -67,6 +81,14 @@ const Listdata = () => {
                </View>
              </View>
            </TouchableOpacity>
+          <View style={styles.form}>
+            <Button title='Hapus' onPress={() => { Alert.alert('Delete', 'Anda Yakin Ingin Menghapus Data Ini?', [
+              { text: 'Tidak', onPress: () => console.log('Cancel Pressed')}, 
+              { text: 'Ya', onPress: () => deleteData(item.id) }]) }} 
+              color='red'
+              
+              />
+          </View>
 
          </View>
        )}
