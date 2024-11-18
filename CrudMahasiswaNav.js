@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Portofolio from './App';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faUser, faUserGraduate } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faUserGraduate, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import {WebView} from 'react-native-webview';
 import { faGithub } from '@fortawesome/free-brands-svg-icons/faGithub';
 import Createdata from './CreateData';
@@ -40,7 +40,7 @@ export default function App() {
         options={{ 
           headerShown: false,
           tabBarIcon: ({color}) => 
-         ( <FontAwesomeIcon icon={faUser} color={color} size={24}/> ),
+         ( <FontAwesomeIcon icon={faPlusCircle} color={color} size={24}/> ),
         }}/>
         <Tab.Screen name="Data Mahasiswa" component={Daftarmahasiswa} 
         options={{ 
