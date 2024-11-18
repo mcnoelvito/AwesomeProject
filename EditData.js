@@ -1,7 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, View, ScrollView, Text, TextInput, Button, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  SafeAreaView,
+  View,
+  TextInput,
+  Button,
+  StyleSheet,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faGraduationCap, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
 
 const Createdata = () => {
   const jsonUrl = 'http://10.0.2.2:3000/mahasiswa';
@@ -10,10 +21,68 @@ const Createdata = () => {
   const [kelas, setKelas] = useState('');
   const [gender, setGender] = useState('');
   const [email, setEmail] = useState('');
-  const [selectedUser, setSelectedUser] = useState({});
+  const [selectedUser, setSelectedUser] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const [dataUser, setDataUser] = useState([]);
   const [refresh, setRefresh] = useState(false);
+
+  const fetchData = () => {
+    setLoading(true);
+    fetch(jsonUrl)
+      .then((response) => response.json())
+      .then((json) => setDataUser(json))
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const refreshPage = () => {
+    setRefresh(true);
+    fetchData();
+    setRefresh(false);
+  };
+
+  const submit = () => {
+    if (!selectedUser || !selectedUser.id) {
+      alert('Pilih data untuk diedit.');
+      return;
+    }
+
+    const data = {
+      first_name,
+      last_name,
+      email,
+      kelas,
+      gender,
+    };
+
+    fetch(`${jsonUrl}/${selectedUser.id}`, {
+      method: 'PATCH',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then(() => {
+        alert('Data berhasil diperbarui');
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setKelas('');
+        setGender('');
+        setSelectedUser(null);
+        refreshPage();
+      })
+      .catch((error) => {
+        console.error(error);
+        alert('Gagal memperbarui data');
+      });
+  };
 
   const selectItem = (item) => {
     setSelectedUser(item);
@@ -24,124 +93,82 @@ const Createdata = () => {
     setEmail(item.email);
   };
 
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(jsonUrl);
-      const json = await response.json();
-      setDataUser(json);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const submit = () => {
-    const data = {
-      first_name,
-      last_name,
-      email,
-      kelas,
-      gender,
-    };
-
-    fetch(jsonUrl, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json);
-        alert('Data tersimpan');
-        setFirstName('');
-        setLastName('');
-        setEmail('');
-        setKelas('');
-        setGender('');
-        fetchData(); // Refresh data setelah submit
-      })
-      .catch((error) => {
-        console.error(error);
-        alert('Terjadi kesalahan saat menyimpan data');
-      });
-  };
-
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <View>
-          <Text style={styles.title}>Edit Data Mahasiswa</Text>
-          <View style={styles.form}>
-            <TextInput
-              style={styles.input}
-              placeholder="Nama Depan"
-              value={first_name}
-              onChangeText={(value) => setFirstName(value)}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Nama Belakang"
-              value={last_name}
-              onChangeText={(value) => setLastName(value)}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Kelas"
-              value={kelas}
-              onChangeText={(value) => setKelas(value)}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Jenis Kelamin"
-              value={gender}
-              onChangeText={(value) => setGender(value)}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Email"
-              value={email}
-              onChangeText={(value) => setEmail(value)}
-            />
-            <Button title="Simpan" onPress={submit} />
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
+      <SafeAreaView style={styles.container}>
+        {isLoading ? (
+          <View style={styles.loading}>
+            <Text>Loading...</Text>
           </View>
-        </View>
-        <View style={styles.divider}></View>
-        <FlatList
-          style={{ marginBottom: 10 }}
-          data={dataUser}
-          onRefresh={fetchData}
-          refreshing={refresh}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => selectItem(item)}>
-              <View style={styles.card}>
-                <View style={styles.avatar}>
-                  <FontAwesomeIcon icon={faGraduationCap} size={50} />
-                </View>
-                <View>
-                  <Text style={styles.cardtitle}>
-                    {item.first_name} {item.last_name}
-                  </Text>
-                  <Text>{item.kelas}</Text>
-                  <Text>{item.gender}</Text>
-                </View>
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end' }}>
-                  <FontAwesomeIcon icon={faPenToSquare} size={20} />
-                </View>
-              </View>
-            </TouchableOpacity>
-          )}
-        />
-      </ScrollView>
-    </SafeAreaView>
+        ) : (
+          <>
+            <Text style={styles.title}>Edit Data Mahasiswa</Text>
+            <View style={styles.form}>
+              <TextInput
+                style={styles.input}
+                placeholder="Nama Depan"
+                value={first_name}
+                onChangeText={setFirstName}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Nama Belakang"
+                value={last_name}
+                onChangeText={setLastName}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Kelas"
+                value={kelas}
+                onChangeText={setKelas}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Jenis Kelamin"
+                value={gender}
+                onChangeText={setGender}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Email"
+                value={email}
+                onChangeText={setEmail}
+              />
+              <Button title="Edit" onPress={submit} />
+            </View>
+            <FlatList
+              data={dataUser}
+              keyExtractor={(item) => item.id.toString()}
+              refreshing={refresh}
+              onRefresh={refreshPage}
+              contentContainerStyle={{ paddingBottom: 50 }}
+              renderItem={({ item }) => (
+                <TouchableOpacity onPress={() => selectItem(item)}>
+                  <View style={styles.card}>
+                    <View style={styles.avatar}>
+                      <FontAwesomeIcon icon={faGraduationCap} size={50} />
+                    </View>
+                    <View>
+                      <Text style={styles.cardtitle}>
+                        {item.first_name} {item.last_name}
+                      </Text>
+                      <Text>{item.kelas}</Text>
+                      <Text>{item.gender}</Text>
+                    </View>
+                    <View style={styles.editIcon}>
+                      <FontAwesomeIcon icon={faPenToSquare} size={20} />
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              )}
+            />
+          </>
+        )}
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -152,18 +179,22 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
   },
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   title: {
     paddingVertical: 12,
-    paddingHorizontal: 20,
-    backgroundColor: 'lightgray',
-    color: 'black',
+    backgroundColor: '#333',
+    color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
-    textAlign: 'left',
+    textAlign: 'center',
   },
   form: {
-    paddingTop: 5,
-    paddingBottom: 20,
+    padding: 10,
+    marginBottom: 10,
   },
   input: {
     borderWidth: 1,
@@ -173,30 +204,25 @@ const styles = StyleSheet.create({
     width: '100%',
     marginVertical: 5,
   },
-  avatar: {
-    borderRadius: 100,
-    width: 80,
-  },
-  cardtitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
   card: {
     flexDirection: 'row',
-    padding: 20,
-    borderRadius: 10,
-    backgroundColor: 'white',
-    shadowColor: '#000',
-    shadowOffset: { width: 1, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
+    alignItems: 'center',
+    padding: 15,
+    marginVertical: 5,
+    backgroundColor: '#f9f9f9',
+    borderRadius: 8,
     elevation: 2,
-    marginHorizontal: 20,
-    marginVertical: 7,
   },
-  divider: {
-    height: 1,
-    backgroundColor: 'lightgray',
-    marginVertical: 10,
+  avatar: {
+    marginRight: 15,
+  },
+  cardtitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  editIcon: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
   },
 });
