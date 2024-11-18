@@ -45,9 +45,7 @@ const Listdata = () => {
             refreshPage();
           })
         
-      }
-     
-     
+      }   
     
  return (
     <SafeAreaView>
@@ -104,11 +102,12 @@ export default Listdata
 const styles = StyleSheet.create({
     title: {
       paddingVertical: 12,
-      backgroundColor: '#333',
-      color: 'white',
-      fontSize: 20,
+      paddingHorizontal: 20,
+      backgroundColor: 'lightgray',
+      color: 'black',
+      fontSize: 25,
       fontWeight: 'bold',
-      textAlign: 'center',
+      textAlign: 'align left',
     },
     avatar: {
       borderRadius: 100,
@@ -139,6 +138,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingTop: 5,
         paddingBottom: 20,
-      },
+      }
      })
      

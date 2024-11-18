@@ -4,11 +4,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Portofolio from './App';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faUser, faUserGraduate, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import { faUserPen, faUserGraduate, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import {WebView} from 'react-native-webview';
 import { faGithub } from '@fortawesome/free-brands-svg-icons/faGithub';
 import Createdata from './CreateData';
 import Daftarmahasiswa from './List_data';
+import EditData from './EditData';
 
 function HomeScreen() {
   return (
@@ -16,17 +17,15 @@ function HomeScreen() {
   );
 }
 
-function Datamahasiswa() {
+function Damahasiswa() {
   return (
     <Mahasiswa/>
   );
 }
 
-function WebScreen() {
+function EditScreen() {
   return (
-    <WebView
-      source={{ uri: 'https://github.com/mcnoelvito' }}
-    />
+    <EditData/>
   );
 }
 
@@ -49,11 +48,11 @@ export default function App() {
          ( <FontAwesomeIcon icon={faUserGraduate} color={color} size={24}/> ),
         }}
         />
-        <Tab.Screen name="GitHub Saya" component={WebScreen} 
+        <Tab.Screen name="Edit" component={EditScreen} 
         options={{ 
           headerShown: false,
           tabBarIcon: ({color}) => 
-         ( <FontAwesomeIcon icon={faGithub} color={color} size={24}/> ),
+         ( <FontAwesomeIcon icon={faUserPen} color={color} size={24}/> ),
         }}
         />
       </Tab.Navigator>
